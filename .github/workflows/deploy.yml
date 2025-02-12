@@ -1,0 +1,25 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 197.255.79.195 >> ~/.ssh/known_hosts
+
+      - name: Deploy Application
+        run: |
+          ssh ubuntu@197.255.79.195 'cd /path/to/app && git pull origin main && systemctl restart fastapi-app'
