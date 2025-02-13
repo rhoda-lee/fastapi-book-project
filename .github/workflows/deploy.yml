@@ -22,4 +22,8 @@ jobs:
 
       - name: Deploy Application
         run: |
-          ssh ubuntu@197.255.79.195 'cd /path/to/app && git pull origin main && systemctl restart fastapi-app'
+          ssh ubuntu@197.255.79.195 '
+          cd /path/to/app &&
+          git pull origin main &&
+          systemctl restart fastapi-app &&
+          systemctl restart nginx'
